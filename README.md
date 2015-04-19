@@ -20,29 +20,9 @@ This runner introduces 2 new dependencies that will need to be on your classpath
 Additionally, to see the logging output, you will need a [runtime binding](http://www.slf4j.org/manual.html#swapping) to a slf4j implementation.
 
 ## Installation
-This has been published to the Sonatype snapshot repository (https://oss.sonatype.org/content/repositories/snapshots/), as version `1.5.0-SNAPSHOT`. To use this from Maven/Gradle/Ivy, you will need to add this snapshot repository to your list of repositories. An example Gradle build script is:
+TODO
+update once built and published to Maven Central
 
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-    }
-
-    dependencies {
-        testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
-        runtime 'ch.qos.logback:logback-classic:1.1.2'
-    }
-
-    test {
-        include '**/TestSuite.*'
-        systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
-        systemProperties['concordion.run.threadCount'] = "2.5C"                    // 2.5 * number of cores
-    }
-
-    test.dependsOn cleanTest
-
-Alternatively you can build from source.
 
 Notes
 -----
@@ -50,7 +30,7 @@ Notes
 * Do not rely on the same threads being used across multiple tests. This runner needs to expand and shrink the thread pool dynamically so that specifications can wait for all the specifications they have launched (using concordion:run) to be complete. Tests will be allocated to the dynamically created threads.
 * This runner will run your tests in a random order. Your tests must be able to run in any order.
 * The "results generated" timings shown on the specifications will show the duration from which the task was parsed until it completed execution. This will include time that any specifications that it launches spent queued.
-* When this runner is launched, a message will be printed to standard output to let you know how many threads have been configured in the thread pool. If you do not see this message, then your runner is not configured properly and will fall back to the standard sequential runner.
+* When this runner is launched, a message will be logged (using slf4j) to let you know how many threads have been configured in the thread pool. If you do not see this message, then your runner is not configured properly and will fall back to the standard sequential runner.
 
 API changes
 -----------

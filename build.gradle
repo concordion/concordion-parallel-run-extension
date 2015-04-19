@@ -1,0 +1,38 @@
+apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
+
+description = 'An extension to the concordion:run command to run specifications in parallel'
+
+dependencies {
+    compile     'com.google.guava:guava:18.0',
+                'org.slf4j:slf4j-api:1.7.10'
+    testCompile 'org.concordion:concordion-logging-tooltip-extension:1.1.2'
+    testRuntime 'org.slf4j:slf4j-simple:1.7.10'
+}
+
+ext {
+    developers = {
+        developer {
+            id 'nigel.charman.nz'
+            name 'Nigel Charman'
+            roles { role 'Project owner' }
+            url 'http://gplus.to/NigelCharman'
+        }
+    }
+    inceptionYear = '2014'   
+}
+
+githubPages {
+    repoUri = 'git@github.com:nigelcharman/concordion-parallel-run-extension.git'
+    pages {
+        from 'docs'
+        
+        from ('build/reports/spec/spec/concordion/ext/run/parallel/') {
+            into 'spec'
+        }
+        
+        from ('build/docs/javadoc/') {
+            into 'api'
+        }
+    }
+}
+

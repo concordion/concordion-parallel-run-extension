@@ -1,0 +1,36 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+
+  <h1>Parallel Run Extension</h1>
+
+  <p>
+    Concordion's <a href="http://concordion.org/dist/1.4.7/spec/concordion/command/run/Run.html">run</a> command runs
+    another specification from the current specification, with the specification link updated to show success or
+    failure. By default these are run sequentially.
+  </p>
+
+  <p>
+    This extension modifies the
+    <code>run</code>
+    command to run specifications in parallel. It configures a thread pool, limiting the number of concurrent executions
+    to the size of the thread pool. By default the pool is configured with 4 threads.
+  </p>
+
+  <div class="example">
+    <h3>Example</h3>
+    <p>Given Concordion is <span c:execute="configureParallelRun()">configured</span> to use the parallel run extension, and the thread pool size set
+        to <span c:execute="setThreadCount(#TEXT)">2</span> threads.</p>
+    <p>A specification with the following body:</p>
+    <pre class="html" c:execute="#result=process(#TEXT)">&lt;a concordion:run="concordion" href="Test1.html"&gt;test1&lt;/a&gt;
+&lt;a concordion:run="concordion" href="Test2.html"&gt;test2&lt;/a&gt;
+&lt;a concordion:run="concordion" href="Test3.html"&gt;test3&lt;/a&gt;</pre>
+     <p>where test1, test2 and test3 each take 1 second to run, results in:</p>
+     <pre c:assertEquals="#result.outputFragmentXML" class="html">&lt;a concordion:run="concordion" href="Test1.html" class="success"&gt;test1&lt;/a&gt;
+&lt;a concordion:run="concordion" href="Test2.html" class="success"&gt;test2&lt;/a&gt;
+&lt;a concordion:run="concordion" href="Test3.html" class="success"&gt;test3&lt;/a&gt;</pre>
+      <p>and completes within <span c:assertTrue="durationGreaterThan(#TEXT)">2</span> and <span c:assertTrue="durationLessThan(#TEXT)">3</span> seconds.</p> 
+  </div>
+
+</body>
+</html>

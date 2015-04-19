@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.concordion.api.Resource;
 import org.concordion.api.Result;
 import org.concordion.api.ResultRecorder;
+import org.concordion.api.RunStrategy;
 import org.concordion.api.Runner;
 import org.concordion.api.RunnerResult;
 import org.concordion.api.listener.SpecificationProcessingEvent;
@@ -19,7 +20,6 @@ import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.internal.ConcordionBuilder;
 import org.concordion.internal.FailFastException;
 import org.concordion.internal.command.ResultAnnouncer;
-import org.concordion.internal.command.RunStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

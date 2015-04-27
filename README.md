@@ -21,21 +21,6 @@ If using a dependency management tool, such as Maven, Gradle or Ivy, these will 
 ### slf4j runtime
 Additionally, to see the logging output, you will need a [runtime binding](http://www.slf4j.org/manual.html#swapping) to a slf4j implementation.
 
-### Example
-As an example, the following Gradle dependencies will install v1.0.0 of the extension and configure it to use the Simple slf4j runtime.
-
-```gradle
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile 'org.concordion:concordion:1.5.0'
-    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.0'
-    testRuntime 'org.slf4j:slf4j-simple:1.7.10'
-} 
-```
-
 # Usage
  1. You will need to have your test suite structured to use the [concordion:run](http://concordion.org/Tutorial.html#concordion:run) command. This runner will submit a task to the thread pool for each specification linked using concordion:run.
  
@@ -46,6 +31,32 @@ dependencies {
 Assuming you have a logging runtime specified, a message in the logging output shows the number of threads that are configured. For example:
 
 ```[main] INFO org.concordion.ext.run.parallel - Running concordion:run commands in parallel with 2 threads```  
+
+## Example
+As an example, the following build.gradle script will install v0.1.0 of the extension and configure it to use the Simple slf4j runtime.
+
+```gradle
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
+    testCompile 'org.concordion:concordion-parallel-run-extension:0.1.0'
+    testRuntime 'org.slf4j:slf4j-simple:1.7.10'
+}
+
+test {
+    systemProperties['concordion.extensions'] = "org.concordion.ext.ParallelRunExtension"
+    systemProperties['concordion.run.threadCount'] = "2.5C"                    // 2.5 * number of cores
+    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
+}
+
+test.dependsOn cleanTest
+```
 
 # Notes
 * This runner runs the tests within the same JVM process. To run your tests safely in parallel, your code must be thread-safe. In particular be wary of any shared state (including tests using the same data in a database) or shared resources (eg. static references to browser instances).

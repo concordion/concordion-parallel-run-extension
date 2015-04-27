@@ -17,7 +17,7 @@ import org.concordion.api.Runner;
 import org.concordion.api.RunnerResult;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 import org.concordion.api.listener.SpecificationProcessingListener;
-import org.concordion.internal.ConcordionBuilder;
+import org.concordion.ext.ParallelRunExtension;
 import org.concordion.internal.FailFastException;
 import org.concordion.internal.command.ResultAnnouncer;
 import org.slf4j.Logger;
@@ -104,8 +104,8 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
             } 
             return Integer.parseInt(threadCount);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("The system property '" + ConcordionBuilder.PROPERTY_RUN_THREAD_COUNT 
-                    + "' must set to either an integer value, or a numeric value suffixed with C."
+            throw new IllegalArgumentException("If set, the system property '" + ParallelRunExtension.PROPERTY_RUN_THREAD_COUNT 
+                    + "' must be either an integer value, or a numeric value suffixed with C."
                     + " If the latter, the numeric value is multiplied by the number of cores.");
         }
     }

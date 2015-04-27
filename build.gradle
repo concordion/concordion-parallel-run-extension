@@ -2,9 +2,16 @@ apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-b
 
 description = 'An extension to the concordion:run command to run specifications in parallel'
 
+repositories {
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
 dependencies {
     compile     'com.google.guava:guava:18.0',
-                'org.slf4j:slf4j-api:1.7.10'
+                'org.slf4j:slf4j-api:1.7.10',
+                'org.concordion:concordion:1.5.0-SNAPSHOT:tests'
     testCompile 'org.concordion:concordion-logging-tooltip-extension:1.1.2'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }
@@ -36,3 +43,7 @@ githubPages {
     }
 }
 
+test {
+    exclude 'Test*.class'
+    forkEvery = 1
+}

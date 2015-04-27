@@ -29,7 +29,7 @@
      <pre c:assertEquals="#result.outputFragmentXML" class="html">&lt;a concordion:run="concordion" href="Test1.html" class="success"&gt;test1&lt;/a&gt;
 &lt;a concordion:run="concordion" href="Test2.html" class="success"&gt;test2&lt;/a&gt;
 &lt;a concordion:run="concordion" href="Test3.html" class="success"&gt;test3&lt;/a&gt;</pre>
-      <p>and completes within <span c:assertTrue="durationGreaterThan(#TEXT)">2</span> and <span c:assertTrue="durationLessThan(#TEXT)">3</span> seconds.</p> 
+      <p>and completes within <span c:assertEquals="durationGreaterThan(#TEXT)">2</span> and <span c:assertEquals="durationLessThan(#TEXT)">3</span> seconds.</p> 
   </div>
 
 </body>

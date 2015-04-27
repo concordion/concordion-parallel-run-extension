@@ -34,17 +34,20 @@ public class ParallelRunExtensionFixture {
         return result;
     }
     
-    public boolean durationGreaterThan(double seconds) {
-        return duration > seconds * 1000;
+    public Number durationGreaterThan(int seconds) {
+        if (duration > seconds * 1000) {
+            return seconds;
+        } else {
+            return 0.001 * duration;
+        }
     }
 
-    public boolean durationLessThan(double seconds) {
-        boolean lessThan = duration < (seconds * 1000);
-        if (!lessThan) {
-            throw new AssertionError("duration was " + duration + " milliseconds");
+    public Number durationLessThan(int seconds) {
+        if (duration < seconds * 1000) {
+            return seconds;
+        } else {
+            return 0.001 * duration;
         }
-        logger.info(String.format("took %d ms", duration));
-        return lessThan;
     }
     
     public void configureParallelRun() {

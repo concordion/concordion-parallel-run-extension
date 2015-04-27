@@ -41,7 +41,7 @@ dependencies {
  
  2. Add the extension to Concordion, for example by setting the system property `concordion.extensions` to `org.concordion.ext.ParallelRunExtension`.
  
- 3. Set the system property `concordion.run.threadCount` to the maximum number of threads you want to run concurrently. If this property is not set, the specifications will be run sequentially. Suffixing this property value with `C` will multiply the value by the number of processors available to the JVM. For example, the value `2.5C` will set the thread count to 10 when run on a 4-core machine. 
+ 3. Optionally, set the system property `concordion.run.threadCount` to the maximum number of threads you want to run concurrently. If this property is not set, the specifications will be run sequentially. Suffixing this property value with `C` will multiply the value by the number of processors available to the JVM. For example, the value `2.5C` will set the thread count to 10 when run on a 4-core machine. 
 
 Assuming you have a logging runtime specified, a message in the logging output shows the number of threads that are configured. For example:
 

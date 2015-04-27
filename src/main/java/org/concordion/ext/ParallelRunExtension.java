@@ -1,11 +1,12 @@
-package org.concordion.ext.run.parallel;
+package org.concordion.ext;
 
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.ext.run.parallel.ParallelRunStrategy;
 
 public class ParallelRunExtension implements ConcordionExtension {
 
-    private ParallelRunStrategy extension = new ParallelRunStrategy(); 
+    private ParallelRunStrategy runStrategy = new ParallelRunStrategy(); 
     
     public static final String PROPERTY_RUN_THREAD_COUNT = "concordion.run.threadCount";
 
@@ -18,7 +19,7 @@ public class ParallelRunExtension implements ConcordionExtension {
     
     @Override
     public void addTo(ConcordionExtender concordionExtender) {
-        concordionExtender.withSpecificationProcessingListener(extension);
-        concordionExtender.withRunStrategy(extension);
+        concordionExtender.withSpecificationProcessingListener(runStrategy);
+        concordionExtender.withRunStrategy(runStrategy);
     }
 }

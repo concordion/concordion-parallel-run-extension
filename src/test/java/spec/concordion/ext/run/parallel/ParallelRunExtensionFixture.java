@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.concordion.api.Resource;
 import org.concordion.api.extension.Extensions;
 import org.concordion.ext.LoggingTooltipExtension;
-import org.concordion.ext.run.parallel.ParallelRunExtension;
+import org.concordion.ext.ParallelRunExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.AfterClass;
 import org.junit.runner.RunWith;

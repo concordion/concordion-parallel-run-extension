@@ -33,9 +33,11 @@ Assuming you have a logging runtime specified, a message in the logging output s
 ```[main] INFO org.concordion.ext.run.parallel - Running concordion:run commands in parallel with 2 threads```  
 
 ## Example
-As an example, the following build.gradle script will install v0.1.0 of the extension and configure it to use the Simple slf4j runtime.
+As an example, the following build.gradle script will install v1.0.0-SNAPHOT of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
 
 ```gradle
+apply plugin: 'java'
+
 repositories {
     mavenCentral()
     maven {
@@ -45,11 +47,12 @@ repositories {
 
 dependencies {
     testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
-    testCompile 'org.concordion:concordion-parallel-run-extension:0.1.0'
+    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.0-SNAPSHOT'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }
 
 test {
+    include '**/Index.class'
     systemProperties['concordion.extensions'] = "org.concordion.ext.ParallelRunExtension"
     systemProperties['concordion.run.threadCount'] = "2.5C"                    // 2.5 * number of cores
     systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"

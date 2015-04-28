@@ -6,7 +6,8 @@ Concordion's [run command](http://concordion.org/Tutorial.html#concordion:run) r
 This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 4 threads.
 
 ## Installation
-The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.0%7Cjar).
+<!--- The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.0%7Cjar). --->
+The 1.0.0-SNAPSHOT version of the extension is available from the [Sonatype snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/org/concordion/concordion-parallel-run-extension/1.0.0-SNAPSHOT/). 
 
 ### Dependencies
 This extension requires Concordion v1.5.0 or later.

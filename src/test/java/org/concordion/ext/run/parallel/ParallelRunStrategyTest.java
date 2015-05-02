@@ -12,11 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.concordion.api.Resource;
 import org.concordion.api.Result;
 import org.concordion.api.ResultRecorder;
+import org.concordion.api.ResultSummary;
 import org.concordion.api.Runner;
-import org.concordion.api.RunnerResult;
 import org.concordion.api.listener.SpecificationProcessingEvent;
-import org.concordion.ext.run.parallel.ParallelRunStrategy;
 import org.concordion.internal.FailFastException;
+import org.concordion.internal.SingleResultSummary;
 import org.concordion.internal.command.ResultAnnouncer;
 import org.junit.Test;
 
@@ -63,7 +63,8 @@ public class ParallelRunStrategyTest {
         long actualRunMillis = System.currentTimeMillis() - startTimeMillis;
         
         assertEquals(iterations + 1, results.size());
-        assertEquals("For " + "myChild", Result.SUCCESS, results.get("myChild"));
+        SingleResultSummary summary = (SingleResultSummary) results.get("myChild");
+        assertEquals("For " + "myChild", Result.SUCCESS, summary.getResult());
         
         for (final Entry<String, Object> expectedResult : expectedResults.entrySet()) {
             String childHref = expectedResult.getKey();
@@ -82,7 +83,7 @@ public class ParallelRunStrategyTest {
     // test fail-fast
     // test deeper nesting
     // test roll-up of results
-    // test results recordedgit b
+    // test results recorded
 
     private Map<String, Object> createResults(int iterations) {
         Map<String, Object> expectedResults = new HashMap<String, Object>();
@@ -90,15 +91,15 @@ public class ParallelRunStrategyTest {
             Object result = null;
             switch (i % 5) {
             case 0:
-                result = Result.SUCCESS;
+                result = new SingleResultSummary(Result.SUCCESS);
                 break;
 
             case 1:
-                result = Result.FAILURE;
+                result = new SingleResultSummary(Result.FAILURE);
                 break;
 
             case 2:
-                result = Result.IGNORED;
+                result = new SingleResultSummary(Result.IGNORED);
                 break;
 
             case 3:
@@ -123,7 +124,7 @@ public class ParallelRunStrategyTest {
         }
         
         @Override
-        public void announce(Result result) {
+        public void announce(ResultSummary result) {
             results.put(child, result);
         }
         
@@ -148,6 +149,10 @@ public class ParallelRunStrategyTest {
         @Override
         public void record(Result result) {
         }
+
+        @Override
+        public void record(ResultSummary result) {
+        }
     }
     
     private long callForEachEntry(Map<String, Object> expectedResults) {
@@ -162,12 +167,15 @@ public class ParallelRunStrategyTest {
                     
             parallelRunStrategy.call(new Runner() {
                 @Override
-                public RunnerResult execute(Resource resource, String href) throws Exception {
+                public ResultSummary execute(Resource resource, String href) throws Exception {
                     Thread.sleep(sleepMillis);
                     if (result instanceof Exception) {
                         throw (Exception) result;
                     }
-                    return new RunnerResult((Result)result);
+                    if (result instanceof ResultSummary) {
+                    	return (ResultSummary) result;
+                    }
+                    return new SingleResultSummary((Result) result);
                 }
             }, parentResource, childHref , new StubbedResultAnnouncer(childHref), new NullResultRecorder());
         }
@@ -182,9 +190,9 @@ public class ParallelRunStrategyTest {
         final long[] totalSleepMillisWrapper = new long[1]; 
         parallelRunStrategy.call(new Runner() {
             @Override
-            public RunnerResult execute(Resource resource, String href) throws Exception {
+            public ResultSummary execute(Resource resource, String href) throws Exception {
                 totalSleepMillisWrapper[0] = callForEachEntry(expectedResults);
-                return new RunnerResult(Result.SUCCESS);
+                return new SingleResultSummary(Result.SUCCESS);
             }
         }, parentResource, childHref, new StubbedResultAnnouncer(childHref), new NullResultRecorder());
         parallelRunStrategy.afterProcessingSpecification(new SpecificationProcessingEvent(parentResource, null));

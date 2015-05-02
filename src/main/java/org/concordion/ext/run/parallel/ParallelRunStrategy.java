@@ -1,6 +1,5 @@
 package org.concordion.ext.run.parallel;
 
-
 import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -12,13 +11,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.concordion.api.Resource;
 import org.concordion.api.Result;
 import org.concordion.api.ResultRecorder;
+import org.concordion.api.ResultSummary;
 import org.concordion.api.RunStrategy;
 import org.concordion.api.Runner;
-import org.concordion.api.RunnerResult;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.ext.ParallelRunExtension;
 import org.concordion.internal.FailFastException;
+import org.concordion.internal.SingleResultSummary;
 import org.concordion.internal.command.ResultAnnouncer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,11 +74,12 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
      * @param announcer announces the results to all listeners (eg. listeners that update the results in the output specification)
      * @param resultRecorder records the results (eg. for console output)
      */
+    @Override
     public void call(final Runner runner, final Resource resource, final String href, ResultAnnouncer announcer, ResultRecorder resultRecorder) {
         try {
             logger.debug("Submit: {} -> {}", resource, href);
             taskLatch.registerTask();
-            ListenableFuture<RunnerResult> future = submitTask(createTask(runner, resource, href));
+            ListenableFuture<ResultSummary> future = submitTask(createTask(runner, resource, href));
             addCallback(future, resource, announcer, resultRecorder);
 
         } catch (Throwable e) {
@@ -87,12 +88,14 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
         }
     }
 
+    @Override
     public void beforeProcessingSpecification(SpecificationProcessingEvent event) {
         if (mainSpecification == null) {
             mainSpecification = event.getResource();
         }
     }
 
+    @Override
     public void afterProcessingSpecification(SpecificationProcessingEvent event) {
         waitForCompletion(event.getResource());
     }
@@ -110,9 +113,10 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
         }
     }
     
-    private Callable<RunnerResult> createTask(final Runner runner, final Resource resource, final String href) {
-        return new Callable<RunnerResult>() {
-            public RunnerResult call() throws Exception {
+    private Callable<ResultSummary> createTask(final Runner runner, final Resource resource, final String href) {
+        return new Callable<ResultSummary>() {
+            @Override
+            public ResultSummary call() throws Exception {
                 logger.debug("Start: {} -> {}", resource, href);
                 try {
                     return runner.execute(resource, href);
@@ -123,25 +127,24 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
         };
     }
     
-    private ListenableFuture<RunnerResult> submitTask(Callable<RunnerResult> task) {
+    private ListenableFuture<ResultSummary> submitTask(Callable<ResultSummary> task) {
         return service.submit(task);
     }
     
-    private void addCallback(ListenableFuture<RunnerResult> future, final Resource resource, final ResultAnnouncer announcer, final ResultRecorder resultRecorder) {
-        Futures.addCallback(future, new FutureCallback<RunnerResult>() {
+    private void addCallback(ListenableFuture<ResultSummary> future, final Resource resource, final ResultAnnouncer announcer, final ResultRecorder resultRecorder) {
+        Futures.addCallback(future, new FutureCallback<ResultSummary>() {
             
             @Override
-            public void onSuccess(RunnerResult runnerResult) {
-                Result result = runnerResult.getResult();
-                announcer.announce(result);
-                resultRecorder.record(result);
+            public void onSuccess(ResultSummary runnerResult) {
+                announcer.announce(runnerResult);
+                resultRecorder.record(runnerResult);
                 taskLatch.markTaskComplete();
             }
             
             @Override
             public void onFailure(Throwable t) {
                 if (t.getCause() instanceof FailFastException) {
-                    announcer.announce(Result.FAILURE);
+                    announcer.announce(new SingleResultSummary(Result.FAILURE));
                     resultRecorder.record(Result.FAILURE);
                 } else {
                     announcer.announceException(t);
@@ -234,4 +237,3 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
         }
     }
 }
-

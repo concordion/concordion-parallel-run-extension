@@ -10,8 +10,7 @@ repositories {
 
 dependencies {
     compile     'com.google.guava:guava:18.0',
-                'org.slf4j:slf4j-api:1.7.10',
-                'org.concordion:concordion:1.5.0-SNAPSHOT:tests'
+                'org.slf4j:slf4j-api:1.7.10'
     testCompile 'org.concordion:concordion-logging-tooltip-extension:1.1.2'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }

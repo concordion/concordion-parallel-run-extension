@@ -6,8 +6,7 @@ Concordion's [run command](http://concordion.org/Tutorial.html#concordion:run) r
 This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 4 threads.
 
 ## Installation
-<!--- The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.0%7Cjar). --->
-The 1.0.0-SNAPSHOT version of the extension is available from the [Sonatype snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/org/concordion/concordion-parallel-run-extension/1.0.0-SNAPSHOT/). 
+The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.0%7Cjar). 
 
 ### Dependencies
 This extension requires Concordion v1.5.0 or later.
@@ -34,21 +33,18 @@ Assuming you have a logging runtime specified, a message in the logging output s
 ```[main] INFO org.concordion.ext.run.parallel - Running concordion:run commands in parallel with 2 threads```  
 
 ## Example
-As an example, the following build.gradle script will install v1.0.0-SNAPHOT of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
+As an example, the following build.gradle script will install v1.0.0 of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
 
 ```gradle
 apply plugin: 'java'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
 }
 
 dependencies {
-    testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
-    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.0-SNAPSHOT'
+    testCompile 'org.concordion:concordion:1.5.0'
+    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.0'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }
 

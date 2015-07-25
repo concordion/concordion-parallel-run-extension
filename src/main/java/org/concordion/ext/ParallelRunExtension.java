@@ -12,9 +12,10 @@ public class ParallelRunExtension implements ConcordionExtension {
 
     static {
         String runThreadCount = System.getProperty(PROPERTY_RUN_THREAD_COUNT);
-        if (runThreadCount != null) {
-            ParallelRunStrategy.initialise(runThreadCount);
+        if (runThreadCount == null) {
+        	runThreadCount = "2";
         }
+        ParallelRunStrategy.initialise(runThreadCount);
     }
     
     @Override

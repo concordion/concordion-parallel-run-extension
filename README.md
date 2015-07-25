@@ -6,7 +6,7 @@ Concordion's [run command](http://concordion.org/Tutorial.html#concordion:run) r
 This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 4 threads.
 
 ## Installation
-The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.0%7Cjar). 
+The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.1%7Cjar). 
 
 ### Dependencies
 This extension requires Concordion v1.5.0 or later.
@@ -26,14 +26,14 @@ Additionally, to see the logging output, you will need a [runtime binding](http:
  
  2. Add the extension to Concordion, for example by setting the system property `concordion.extensions` to `org.concordion.ext.ParallelRunExtension`.
  
- 3. Optionally, set the system property `concordion.run.threadCount` to the maximum number of threads you want to run concurrently. If this property is not set, the specifications will be run sequentially. Suffixing this property value with `C` will multiply the value by the number of processors available to the JVM. For example, the value `2.5C` will set the thread count to 10 when run on a 4-core machine. 
+ 3. Set the system property `concordion.run.threadCount` to the maximum number of threads you want to run concurrently. If this property is not set, the runner will default to 2 threads.. Suffixing this property value with `C` will multiply the value by the number of processors available to the JVM. For example, the value `2.5C` will set the thread count to 10 when run on a 4-core machine. 
 
 Assuming you have a logging runtime specified, a message in the logging output shows the number of threads that are configured. For example:
 
 ```[main] INFO org.concordion.ext.run.parallel - Running concordion:run commands in parallel with 2 threads```  
 
 ## Example
-As an example, the following build.gradle script will install v1.0.0 of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
+As an example, the following build.gradle script will install v1.0.1 of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
 
 ```gradle
 apply plugin: 'java'
@@ -44,7 +44,7 @@ repositories {
 
 dependencies {
     testCompile 'org.concordion:concordion:1.5.0'
-    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.0'
+    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.1'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }
 

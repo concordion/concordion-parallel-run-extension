@@ -3,7 +3,7 @@
 # Introduction
 Concordion's [run command](http://concordion.org/Tutorial.html#concordion:run) runs another specification from the current specification, with the specification link updated to show success or failure. By default the linked specifications are run sequentially.
 
-This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 4 threads.
+This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 2 threads.
 
 ## Installation
 The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.1%7Cjar). 

@@ -14,8 +14,7 @@ import org.concordion.api.ResultRecorder;
 import org.concordion.api.ResultSummary;
 import org.concordion.api.RunStrategy;
 import org.concordion.api.Runner;
-import org.concordion.api.listener.SpecificationProcessingEvent;
-import org.concordion.api.listener.SpecificationProcessingListener;
+import org.concordion.api.listener.*;
 import org.concordion.ext.ParallelRunExtension;
 import org.concordion.internal.FailFastException;
 import org.concordion.internal.SingleResultSummary;
@@ -43,15 +42,17 @@ import com.google.common.util.concurrent.MoreExecutors;
  * Before usage, the {@link #initialise(String)} method must be called to initialise the thread pool to the
  * appropriate size.
  */
-public class ParallelRunStrategy implements RunStrategy, SpecificationProcessingListener {
+public class ParallelRunStrategy implements RunStrategy, SpecificationProcessingListener, ExampleListener,
+        OuterExampleListener {
 
     private static ThreadPoolExecutor executor;
     private static ListeningExecutorService service;
-    private static Object poolSizeLock = new Object();
+    private static final Object poolSizeLock = new Object();
     private static volatile Resource mainSpecification;
     private static Logger logger = LoggerFactory.getLogger("org.concordion.ext.run.parallel");
 
     private TaskLatch taskLatch = new TaskLatch();
+    private Resource currentResource;
 
     /**
      * Initialises the thread pool.
@@ -90,14 +91,32 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
 
     @Override
     public void beforeProcessingSpecification(SpecificationProcessingEvent event) {
+        currentResource = event.getResource();
         if (mainSpecification == null) {
-            mainSpecification = event.getResource();
+            mainSpecification = currentResource;
         }
     }
 
     @Override
     public void afterProcessingSpecification(SpecificationProcessingEvent event) {
-        waitForCompletion(event.getResource());
+    }
+
+    @Override
+    public void beforeExample(ExampleEvent event) {
+    }
+
+    @Override
+    public void beforeOuterExample(OuterExampleEvent event) {
+    }
+
+    @Override
+    public void afterExample(ExampleEvent event) {
+        waitForCompletion(currentResource);
+    }
+
+    @Override
+    public void afterOuterExample(OuterExampleEvent event) {
+        waitForCompletion(currentResource);
     }
 
     private static int parseThreadCount(String threadCount) {
@@ -234,6 +253,8 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
                     logger.debug("Interrupted while waiting for tasks to complete");
                 }
             }
+            waiting.set(false);
+            taskCounter.set(0);
         }
     }
 }

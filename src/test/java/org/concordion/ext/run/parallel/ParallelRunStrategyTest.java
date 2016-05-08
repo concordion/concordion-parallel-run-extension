@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.concordion.api.*;
+import org.concordion.api.listener.OuterExampleEvent;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 import org.concordion.internal.FailFastException;
 import org.concordion.internal.SingleResultSummary;
@@ -188,7 +189,7 @@ public class ParallelRunStrategyTest {
                 }
             }, parentResource, childHref , new StubbedResultAnnouncer(childHref), new NullResultRecorder());
         }
-        parallelRunStrategy.afterProcessingSpecification(new SpecificationProcessingEvent(parentResource, null));
+        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null));
         return totalSleepMillis;
     }
 
@@ -204,7 +205,7 @@ public class ParallelRunStrategyTest {
                 return new SingleResultSummary(Result.SUCCESS);
             }
         }, parentResource, childHref, new StubbedResultAnnouncer(childHref), new NullResultRecorder());
-        parallelRunStrategy.afterProcessingSpecification(new SpecificationProcessingEvent(parentResource, null));
+        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null));
         return totalSleepMillisWrapper[0];
     }
 }

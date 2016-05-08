@@ -1,8 +1,10 @@
+package kids;
+
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
-public class Test1 {
+public class Test2_1 {
     public void sleep() {
         try {
             Thread.sleep(1000);

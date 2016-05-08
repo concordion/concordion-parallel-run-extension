@@ -11,9 +11,7 @@ This extension modifies the run command to run the linked specifications in para
 The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.1%7Cjar). 
 
 ### Dependencies
-This extension requires Concordion v1.5.0 or later.
-
-It also requires 2 extra dependencies that will need to be on your classpath:
+In addition to the Concordion dependency, this extension requires 2 extra dependencies that will need to be on your classpath:
 
  * `com.google.guava:guava:17.0`
  * `org.slf4j:slf4j-api:1.7.7`
@@ -35,7 +33,7 @@ Assuming you have a logging runtime specified, a message in the logging output s
 ```[main] INFO org.concordion.ext.run.parallel - Running concordion:run commands in parallel with 2 threads```  
 
 ## Example
-As an example, the following build.gradle script will install v1.0.1 of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
+As an example, the following build.gradle script will install v1.1.0 of the extension, configure it to use the Simple slf4j runtime and run the Index.html specification with the number of threads equal to 2.5 * number of cores, writing the concordion output to the build/reports/spec folder.
 
 ```gradle
 apply plugin: 'java'
@@ -45,8 +43,8 @@ repositories {
 }
 
 dependencies {
-    testCompile 'org.concordion:concordion:1.5.0'
-    testCompile 'org.concordion:concordion-parallel-run-extension:1.0.1'
+    testCompile 'org.concordion:concordion:2.0.2'
+    testCompile 'org.concordion:concordion-parallel-run-extension:1.1.0'
     testRuntime 'org.slf4j:slf4j-simple:1.7.10'
 }
 
@@ -60,6 +58,14 @@ test {
 test.dependsOn cleanTest
 ```
 
+## Example Command Support
+
+When using the example command in Concordion 2.0.0 or later, each example runs as a separate JUnit test. In order for the JUnit results to be accurate, we must wait at the end of each example for all of its run commands to finish. This includes the "outer" example, which contains all commands in the specification that are not in a specific example command.
+
+Where a specification contains multiple examples, each example becomes a synchronisation point, and further examples will not be executed until the current example is finished.
+
+Note that this requires Concordion 2.0.2 or later to work correctly.
+
 # Notes
 * This runner runs the tests within the same JVM process. To run your tests safely in parallel, your code must be thread-safe. In particular be wary of any shared state (including tests using the same data in a database) or shared resources (eg. static references to browser instances).
 * Do not rely on the same threads being used across multiple tests. This runner needs to expand and shrink the thread pool dynamically so that specifications can wait for all the specifications they have launched (using concordion:run) to be complete. Tests will be allocated to the dynamically created threads.
@@ -70,4 +76,3 @@ test.dependsOn cleanTest
 Alternatively, you can run all of the JUnit tests in parallel, for example using JUnit's [ParallelComputer](https://github.com/junit-team/junit/blob/master/doc/ReleaseNotes4.6.md#test-scheduling-strategies), features in your build tool (eg. Ant, Maven, Gradle), or by running multiple suites in your CI server (eg. Jenkins, TeamCity). The downside of these approaches is:
  1. You have to decide up-front how to split the tests to run in parallel, so will not benefit from the dynamic thread allocation that this runner implements.
  2. If using concordion:run, you will have one index page per test suite, but no master index page to collate the output (there is no support in Concordion currently to collate multiple index pages into a summary page - though contributions are welcome!)
- 

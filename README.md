@@ -8,7 +8,7 @@ Concordion's [run command](http://concordion.org/instrumenting/java/markdown/#ru
 This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 2 threads.
 
 ## Installation
-The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.0.1%7Cjar). 
+The extension is available from [Maven Central](http://search.maven.org/#artifactdetails%7Corg.concordion%7Cconcordion-parallel-run-extension%7C1.1.0%7Cjar). 
 
 ### Dependencies
 In addition to the Concordion dependency, this extension requires 2 extra dependencies that will need to be on your classpath:

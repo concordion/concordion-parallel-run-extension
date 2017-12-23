@@ -27,9 +27,9 @@ ext {
     inceptionYear = '2014'   
 }
 
-githubPages {
+gitPublish {
     repoUri = 'git@github.com:concordion/concordion-parallel-run-extension.git'
-    pages {
+    contents {
         from 'docs'
         
         from ('build/reports/spec/spec/concordion/ext/run/parallel/') {

@@ -1,6 +1,6 @@
 sudo: false
 dist: trusty
-language: groovy
+language: java
 
 jdk:
 - oraclejdk10

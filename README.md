@@ -3,7 +3,7 @@
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 # Introduction
-Concordion's [run command](http://concordion.org/instrumenting/java/markdown/#run-command) runs another specification from the current specification, with the specification link updated to show success or failure. By default the linked specifications are run sequentially.
+Concordion's [run command](https://concordion.org/instrumenting/java/markdown/#run-command) runs another specification from the current specification, with the specification link updated to show success or failure. By default the linked specifications are run sequentially.
 
 This extension modifies the run command to run the linked specifications in parallel. It configures a thread pool, limiting the number of specifications being executed concurrently to the size of the thread pool. By default the pool is configured with 2 threads.
 
@@ -22,7 +22,7 @@ If using a dependency management tool, such as Maven, Gradle or Ivy, these will 
 Additionally, to see the logging output, you will need a [runtime binding](http://www.slf4j.org/manual.html#swapping) to a slf4j implementation.
 
 # Usage
- 1. You will need to have your test suite structured to use the [concordion:run](http://concordion.org/instrumenting/java/markdown/#run-command) command. This runner will submit a task to the thread pool for each specification linked using concordion:run.
+ 1. You will need to have your test suite structured to use the [concordion:run](https://concordion.org/instrumenting/java/markdown/#run-command) command. This runner will submit a task to the thread pool for each specification linked using concordion:run.
  
  2. Add the extension to Concordion, for example by setting the system property `concordion.extensions` to `org.concordion.ext.ParallelRunExtension`.
  

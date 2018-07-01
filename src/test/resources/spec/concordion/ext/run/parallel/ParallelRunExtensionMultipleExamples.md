@@ -20,7 +20,7 @@ The following specification contains 3 examples:
 
 * The "outer" example runs Test2_1 and Test2_2 
 * Example1 runs Test2_3
-* Example1 runs Test2_4 and Test2_5
+* Example2 runs Test2_4 and Test2_5
 
 [&lt;a concordion:run="concordion" href="kids/Test2_1.html"&gt;test1&lt;/a&gt;
 &lt;a concordion:run="concordion" href="kids/Test2_2.html"&gt;test2&lt;/a&gt;
@@ -38,10 +38,10 @@ When run, this results in 5 successful tests within the 3 examples:
 
 [&lt;a concordion:run="concordion" href="kids/Test2_1.html" class="success"&gt;test1&lt;/a&gt;
  &lt;a concordion:run="concordion" href="kids/Test2_2.html" class="success"&gt;test2&lt;/a&gt;
- &lt;div concordion:example="Example 1" id="Example 1"&gt;
+ &lt;div concordion:example="Example 1" id="Example 1"&gt;&lt;p /&gt;
    &lt;a concordion:run="concordion" href="kids/Test2_3.html" class="success"&gt;test3&lt;/a&gt;
  &lt;/div&gt; 
- &lt;div concordion:example="Example 2" id="Example 2"&gt;
+ &lt;div concordion:example="Example 2" id="Example 2"&gt;&lt;p /&gt;
    &lt;a concordion:run="concordion" href="kids/Test2_4.html" class="success"&gt;test4&lt;/a&gt;
    &lt;a concordion:run="concordion" href="kids/Test2_5.html" class="success"&gt;test5&lt;/a&gt;
  &lt;/div&gt;](- "?=#result.outputFragmentXML")

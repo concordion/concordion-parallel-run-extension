@@ -189,7 +189,7 @@ public class ParallelRunStrategyTest {
                 }
             }, parentResource, childHref , new StubbedResultAnnouncer(childHref), new NullResultRecorder());
         }
-        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null));
+        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null, null));
         return totalSleepMillis;
     }
 
@@ -205,7 +205,7 @@ public class ParallelRunStrategyTest {
                 return new SingleResultSummary(Result.SUCCESS);
             }
         }, parentResource, childHref, new StubbedResultAnnouncer(childHref), new NullResultRecorder());
-        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null));
+        parallelRunStrategy.afterOuterExample(new OuterExampleEvent(null, null, null, null));
         return totalSleepMillisWrapper[0];
     }
 }

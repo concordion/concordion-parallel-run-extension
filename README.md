@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/concordion/concordion-parallel-run-extension.svg?branch=master)](https://travis-ci.org/concordion/concordion-parallel-run-extension)
+[![Build Status](https://travis-ci.com/concordion/concordion-parallel-run-extension.svg?branch=master)](https://travis-ci.com/concordion/concordion-parallel-run-extension)
 [![Maven Central](https://img.shields.io/maven-central/v/org.concordion/concordion-parallel-run-extension.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.concordion%22%20AND%20a%3A%22concordion-parallel-run-extension%22)
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 

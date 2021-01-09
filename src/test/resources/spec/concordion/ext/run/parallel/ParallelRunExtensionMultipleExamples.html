@@ -1,0 +1,61 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+
+<h1>Parallel Run Extension With Multiple Examples</h1>
+
+<p>
+    Run commands inside an example are launched as tasks on separate threads when using the parallel runner.
+    In order for the JUnit results to be accurate, we must wait at the end of each example for all of its run commands to finish.
+    This includes the "outer" example, which contains all commands in the specification that are not in a specific example command.
+</p>
+
+<p>
+    Where a specification contains multiple examples, each example becomes a synchronisation point,
+    and further examples will not be executed until the current example is finished.
+</p>
+
+<p><b>Note:</b> Examples within a specification are run serially.
+    Parallel running of examples in a specification is not supported since it would not be thread-safe to do so.
+    For example, the XOM library is not thread-safe and is used by many commands within each example.
+</p>
+
+<div c:example="">
+    <h3>Example</h3>
+    <p>Given Concordion is <span c:execute="configureParallelRun()">configured</span> to use the parallel run extension with
+        <span c:execute="setThreadCount(#TEXT)">3</span> threads.</p>
+    <p>The following specification contains 3 examples:</p>
+    <ul>
+        <li>The "outer" example runs Test2_1 and Test2_2</li>
+        <li>Example1 runs Test2_3</li>
+        <li>Example2 runs Test2_4 and Test2_5</li>
+    </ul>
+
+    <pre class="html" c:execute="#result=process(#TEXT)">&lt;a concordion:run="concordion" href="kids/Test2_1.html"&gt;test1&lt;/a&gt;
+&lt;a concordion:run="concordion" href="kids/Test2_2.html"&gt;test2&lt;/a&gt;
+&lt;div concordion:example="Example 1"&gt;
+  &lt;a concordion:run="concordion" href="kids/Test2_3.html"&gt;test3&lt;/a&gt;
+&lt;/div&gt;
+&lt;div concordion:example="Example 2"&gt;
+  &lt;a concordion:run="concordion" href="kids/Test2_4.html"&gt;test4&lt;/a&gt;
+  &lt;a concordion:run="concordion" href="kids/Test2_5.html"&gt;test5&lt;/a&gt;
+&lt;/div&gt;</pre>
+    <p>and each test takes 1 second to run.</p>
+
+    <p>When run, this results in 5 successful tests within the 3 examples:</p>
+    <pre c:assertEquals="#result.outputFragmentXML" class="html">&lt;a concordion:run="concordion" href="kids/Test2_1.html" class="success"&gt;test1&lt;/a&gt;
+ &lt;a concordion:run="concordion" href="kids/Test2_2.html" class="success"&gt;test2&lt;/a&gt;
+ &lt;div concordion:example="Example 1" id="Example 1"&gt;&lt;p /&gt;
+   &lt;a concordion:run="concordion" href="kids/Test2_3.html" class="success"&gt;test3&lt;/a&gt;
+ &lt;/div&gt;
+ &lt;div concordion:example="Example 2" id="Example 2"&gt;&lt;p /&gt;
+   &lt;a concordion:run="concordion" href="kids/Test2_4.html" class="success"&gt;test4&lt;/a&gt;
+   &lt;a concordion:run="concordion" href="kids/Test2_5.html" class="success"&gt;test5&lt;/a&gt;
+ &lt;/div&gt;</pre>
+    <p>and completes within <span c:assertEquals="durationGreaterThan(#TEXT)">3</span> and <span c:assertEquals="durationLessThan(#TEXT)">4</span> seconds, since
+        each example takes approx 1 second to run.</p>
+</div>
+
+
+</body>
+</html>

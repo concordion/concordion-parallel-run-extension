@@ -1,0 +1,42 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+
+<h1>Parallel Run Extension</h1>
+
+<p>
+ Concordion's <a href="http://concordion.github.io/concordion/latest/spec/command/run/Run.html">run command</a> runs
+ another specification from the current specification, with the specification link updated to show success or
+ failure. By default these are run sequentially.
+</p>
+
+<p>
+ This extension modifies the
+ <code>run</code>
+ command to run specifications in parallel. It configures a thread pool, limiting the number of concurrent executions
+ to the size of the thread pool. By default the pool is configured with 2 threads.
+</p>
+
+<div c:example="3-threads">
+ <h3>Example with 3 threads</h3>
+ <p>Given Concordion is <span c:execute="configureParallelRun()">configured</span> to use the parallel run extension with
+  <span c:execute="setThreadCount(#TEXT)">3</span> threads.</p>
+ <p>A specification that runs 4 tests:</p>
+ <pre class="html" c:execute="#result=process(#TEXT)">&lt;a concordion:run="concordion" href="kids/Test1_1.html"&gt;test1&lt;/a&gt;
+    &lt;a concordion:run="concordion" href="kids/Test1_2.html"&gt;test2&lt;/a&gt;
+    &lt;a concordion:run="concordion" href="kids/Test1_3.html"&gt;test3&lt;/a&gt;
+    &lt;a concordion:run="concordion" href="kids/Test1_4.html"&gt;test4&lt;/a&gt;</pre>
+ <p>where each test takes 1 second to run, results in 4 successful tests:</p>
+ <pre c:assertEquals="#result.outputFragmentXML" class="html">&lt;a concordion:run="concordion" href="kids/Test1_1.html" class="success"&gt;test1&lt;/a&gt;
+ &lt;a concordion:run="concordion" href="kids/Test1_2.html" class="success"&gt;test2&lt;/a&gt;
+ &lt;a concordion:run="concordion" href="kids/Test1_3.html" class="success"&gt;test3&lt;/a&gt;
+ &lt;a concordion:run="concordion" href="kids/Test1_4.html" class="success"&gt;test4&lt;/a&gt;</pre>
+ <p>and completes within <span c:assertEquals="durationGreaterThan(#TEXT)">2</span> and <span c:assertEquals="durationLessThan(#TEXT)">3</span> seconds.</p>
+</div>
+
+<h4>Further Details</h4>
+<p>How does the parallel runner work with <a href="ParallelRunExtensionMultipleExamples.html" c:run="concordion">multiple examples</a>?</p>
+
+
+</body>
+</html>

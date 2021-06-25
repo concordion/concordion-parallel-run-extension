@@ -1,4 +1,4 @@
-name: Build and Test Concordion
+name: Build and Test
 
 on:
   push:

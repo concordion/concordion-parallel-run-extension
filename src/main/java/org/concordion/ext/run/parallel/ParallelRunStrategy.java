@@ -171,7 +171,7 @@ public class ParallelRunStrategy implements RunStrategy, SpecificationProcessing
                 }
                 taskLatch.markTaskComplete();
             }
-        });
+        }, MoreExecutors.directExecutor());
     }
 
     private void waitForCompletion(Resource resource) {
